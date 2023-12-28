@@ -1,4 +1,8 @@
 import sqlite3
+from pathlib import Path
+
+SQLITE_DB_NAME = 'seo.db'
+SQLITE_DB_PATH = (Path(__file__).parent / SQLITE_DB_NAME).resolve()
 
 
 class SqlitePipeline:
@@ -9,7 +13,7 @@ class SqlitePipeline:
     table_name: str
 
     def open_spider(self, spider):
-        self.con = sqlite3.connect('seo.db')
+        self.con = sqlite3.connect(SQLITE_DB_PATH)
         self.cur = self.con.cursor()
         self.table_name = spider.name
         self.cur.execute(
