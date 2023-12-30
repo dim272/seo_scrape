@@ -80,14 +80,19 @@ def get_db_data(db_name, table_name):
 
 
 def generate_message(analysis: dict[str, dict]) -> str:
+    top_tags = set()
     message = ''
     for tag_name, tag_values in analysis.items():
         message += f'\nTop values for {tag_name!r} tag:\n'
         tag_values = sorted(tag_values.items(), key=lambda item: item[1], reverse=True)
         for index, (word, counter) in enumerate(tag_values):
             message += f'\t{word!r} :: {counter}\n'
+            if index < 5 and tag_name not in ('h3', 'h4', 'h5'):
+                top_tags.add(word)
             if counter <= 1 or index >= 10:
                 break
+
+    message += f'\nTop tags: {", ".join(sorted(top_tags))}'
 
     return message
 
